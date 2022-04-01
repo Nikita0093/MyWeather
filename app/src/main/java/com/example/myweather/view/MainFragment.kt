@@ -10,17 +10,19 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myweather.databinding.FragmentMainBinding
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
 
-    lateinit var binding: FragmentMainBinding
+    var _binding: FragmentMainBinding? = null
+    val binding get() = _binding!!
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         // return inflater.inflate(R.layout.fragment_main, container, false)
         return binding.root
 
@@ -40,7 +42,8 @@ class MainFragment : Fragment() {
             is AppState.Error -> {
                 binding.textView.visibility = View.VISIBLE
                 binding.loadingFrame.visibility = View.GONE
-                binding.textView.text = "$data"
+                // binding.textView.text = "$data"
+                Snackbar.make(binding.textView, "$data", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Loading -> {
                 binding.loadingFrame.visibility = View.VISIBLE
@@ -48,10 +51,17 @@ class MainFragment : Fragment() {
             is AppState.Success -> {
                 binding.textView.visibility = View.VISIBLE
                 binding.loadingFrame.visibility = View.GONE
-                binding.textView.text = "Success"
+                // binding.textView.text = "Success"
+                Snackbar.make(binding.textView, "Success", Snackbar.LENGTH_SHORT).show()
+
             }
         }
 
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
