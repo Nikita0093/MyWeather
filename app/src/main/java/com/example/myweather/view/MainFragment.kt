@@ -40,19 +40,20 @@ class MainFragment : Fragment() {
     private fun renderData(data: AppState) {
         when (data) {
             is AppState.Error -> {
-                binding.textView.visibility = View.VISIBLE
+                binding.cityImage.visibility = View.INVISIBLE
                 binding.loadingFrame.visibility = View.GONE
-                // binding.textView.text = "$data"
                 Snackbar.make(binding.textView, "$data", Snackbar.LENGTH_SHORT).show()
             }
             is AppState.Loading -> {
+                binding.cityImage.visibility = View.INVISIBLE
                 binding.loadingFrame.visibility = View.VISIBLE
             }
             is AppState.Success -> {
-                binding.textView.visibility = View.VISIBLE
+                binding.cityImage.visibility = View.VISIBLE
                 binding.loadingFrame.visibility = View.GONE
-                // binding.textView.text = "Success"
-                Snackbar.make(binding.textView, "Success", Snackbar.LENGTH_SHORT).show()
+                binding.cityName.text = data.weatherData.city.name
+                binding.temperature.text = data.weatherData.temperature.toString()
+                binding.temperatureFeelLike.text = data.weatherData.temperatureFeelLike.toString()
 
             }
         }
