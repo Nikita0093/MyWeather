@@ -7,8 +7,10 @@ import com.example.myweather.repository.Repository
 import com.example.myweather.repository.RepositoryImpl
 import java.lang.Thread.sleep
 
-class MainViewModel(private val liveData: MutableLiveData<AppState> = MutableLiveData(),
-private val repository: Repository = RepositoryImpl()) :
+class MainViewModel(
+    private val liveData: MutableLiveData<AppState> = MutableLiveData(),
+    private val repository: Repository = RepositoryImpl()
+) :
     ViewModel() {
 
 
@@ -20,6 +22,7 @@ private val repository: Repository = RepositoryImpl()) :
     fun getWeather() {
         Thread {
             liveData.postValue(AppState.Loading)
+            sleep(3000L)
             if ((0..10).random() > 5) {
                 liveData.postValue(AppState.Success(repository.getWeatherFromServer()))
             } else {
