@@ -36,9 +36,9 @@ class DetailsFragment : Fragment() {
     private fun renderData(weather: Weather) {
         binding.weatherCardView.visibility = View.VISIBLE
         binding.cityName.text = weather.city.name
-        binding.temperature.text = "Temp:" + weather.temperature.toString() + "сº"
+        binding.temperature.text = "Температура:" + weather.temperature.toString() + "º"
         binding.temperatureFeelLike.text =
-            "FeelLike:" + weather.temperatureFeelLike.toString() + "сº"
+            "Ощущается как:" + weather.temperatureFeelLike.toString() + "º"
         binding.cityImage.setImageDrawable(resources.getDrawable(weather.imageId))
 
 
