@@ -39,6 +39,7 @@ class DetailsFragment : Fragment() {
         binding.temperature.text = "Temp:" + weather.temperature.toString() + "сº"
         binding.temperatureFeelLike.text =
             "FeelLike:" + weather.temperatureFeelLike.toString() + "сº"
+        binding.cityImage.setImageDrawable(resources.getDrawable(weather.imageId))
 
 
     }
