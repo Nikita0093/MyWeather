@@ -2,23 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <FrameLayout
-        android:id="@+id/loadingFrame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:visibility="gone"
-        tools:visibility="visible">
-
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center">
-
-        </ProgressBar>
-    </FrameLayout>
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/weatherCardView"
@@ -47,10 +33,9 @@
                 android:layout_marginEnd="15sp"
                 android:layout_marginBottom="10sp"
                 android:layout_weight="1"
-                android:background="@drawable/moscow"
+                android:background="@drawable/weather"
                 android:clickable="true"
-                android:scaleType="fitXY"
-                android:visibility="invisible">
+                android:scaleType="fitXY">
 
             </androidx.appcompat.widget.AppCompatImageView>
 
@@ -109,26 +94,6 @@
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
-
-    <Button
-        android:id="@+id/buttonTest"
-        android:layout_width="100sp"
-        android:layout_height="100sp"
-        android:layout_gravity="bottom|center"
-        android:text="Test"
-        android:visibility="visible">
-
-    </Button>
-
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:visibility="gone" />
 
 
 </FrameLayout>

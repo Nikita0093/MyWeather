@@ -1,4 +1,4 @@
-package com.example.myweather.view
+package com.example.myweather.view.weatherlist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.mainContainer, MainFragment.newInstance()).commit();
+                .replace(R.id.mainContainer, WeatherListFragment.newInstance()).commit();
         }
 
     }
