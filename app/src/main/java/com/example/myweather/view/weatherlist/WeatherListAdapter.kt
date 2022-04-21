@@ -46,7 +46,8 @@ class WeatherListAdapter(private var data: List<Weather> = listOf()) :
 
 
             binding.root.setOnClickListener(View.OnClickListener {
-                (itemView.context as MainActivity).supportFragmentManager.beginTransaction().addToBackStack(" ").add(
+                (itemView.context as MainActivity).supportFragmentManager.beginTransaction()
+                    .addToBackStack(" ").add(
                     R.id.mainContainer,
                     DetailsFragment.newInstance(bundle)
                 ).commit()

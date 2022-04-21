@@ -17,10 +17,10 @@ import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment(), OnItemListClickListener {
 
-    var _binding: FragmentWeatherListBinding? = null
-    val bindingListFragment get() = _binding!!
+    private var _binding: FragmentWeatherListBinding? = null
+    private val bindingListFragment get() = _binding!!
 
-    val adapter = WeatherListAdapter()
+    private val adapter = WeatherListAdapter()
 
 
     override fun onCreateView(
@@ -28,7 +28,6 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentWeatherListBinding.inflate(inflater, container, false)
-        // return inflater.inflate(R.layout.fragment_main, container, false)
         return bindingListFragment.root
 
     }
@@ -46,39 +45,43 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
             if (isRussian) {
                 viewModel.getRussianWeather();
                 isRussian = false
-                bindingListFragment.floatActonButton.setImageDrawable(ContextCompat.getDrawable(requireContext(),R.drawable.ic_russia))
+                bindingListFragment.floatActonButton.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_russia
+                    )
+                )
             } else {
-                viewModel.getWorldWeather(); isRussian =true
-                bindingListFragment.floatActonButton.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_world))
+                viewModel.getWorldWeather(); isRussian = true
+                bindingListFragment.floatActonButton.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_world
+                    )
+                )
             }
         })
 
     }
 
     private fun renderData(data: AppState) {
-        when (data) {
-            is AppState.Error -> {
-                bindingListFragment.loadingFrame.visibility = View.GONE
-                Snackbar.make(bindingListFragment.root, "$data", Snackbar.LENGTH_SHORT).show()
-            }
-            is AppState.Loading -> {
-                bindingListFragment.loadingFrame.visibility = View.VISIBLE
-                // binding.weatherCardView.visibility = View.INVISIBLE
-            }
-            is AppState.Success -> {
-                bindingListFragment.loadingFrame.visibility = View.GONE
-                adapter.setData(data.weatherList)
+        with(bindingListFragment) {
+            when (data) {
+                is AppState.Error -> {
+                    loadingFrame.visibility = View.GONE
+                    Snackbar.make(bindingListFragment.root, "$data", Snackbar.LENGTH_SHORT).show()
+                }
+                is AppState.Loading -> {
+                    loadingFrame.visibility = View.VISIBLE
+                    // binding.weatherCardView.visibility = View.INVISIBLE
+                }
+                is AppState.Success -> {
+                    loadingFrame.visibility = View.GONE
+                    adapter.setData(data.weatherList)
 
-                /* binding.weatherCardView.visibility = View.VISIBLE
-                 binding.cityImage.visibility = View.VISIBLE
-                 binding.cityName.text = data.weatherData.city.name
-                 binding.temperature.text = "Temp:" + data.weatherData.temperature.toString() + "сº"
-                 binding.temperatureFeelLike.text =
-                     "FeelLike:" + data.weatherData.temperatureFeelLike.toString() + "сº"
-
-                 */
-
+                }
             }
+
         }
 
     }

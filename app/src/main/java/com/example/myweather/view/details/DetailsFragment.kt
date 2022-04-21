@@ -8,11 +8,12 @@ import androidx.fragment.app.Fragment
 import com.example.myweather.databinding.FragmentDetailsBinding
 import com.example.myweather.repository.Weather
 import com.example.myweather.utils.KEY_BUNDLE_WEATHER
+import com.google.android.material.snackbar.Snackbar
 
 class DetailsFragment : Fragment() {
 
-    var _binding: FragmentDetailsBinding? = null
-    val binding get() = _binding!!
+    private var _binding: FragmentDetailsBinding? = null
+    private val binding get() = _binding!!
 
 
     override fun onCreateView(
@@ -22,6 +23,7 @@ class DetailsFragment : Fragment() {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         // return inflater.inflate(R.layout.fragment_main, container, false)
         return binding.root
+
 
     }
 
@@ -34,13 +36,23 @@ class DetailsFragment : Fragment() {
     }
 
     private fun renderData(weather: Weather) {
-        binding.weatherCardView.visibility = View.VISIBLE
-        binding.cityName.text = weather.city.name
-        binding.temperature.text = "Температура:" + weather.temperature.toString() + "º"
-        binding.temperatureFeelLike.text =
-            "Ощущается как:" + weather.temperatureFeelLike.toString() + "º"
-        binding.cityImage.setImageDrawable(resources.getDrawable(weather.imageId))
+        with(binding) {
+            weatherCardView.visibility = View.VISIBLE
+            cityName.text = weather.city.name
+            temperature.text = "Температура:" + weather.temperature.toString() + "º"
+            temperatureFeelLike.text =
+                "Ощущается как:" + weather.temperatureFeelLike.toString() + "º"
+            cityImage.setImageDrawable(resources.getDrawable(weather.imageId))
 
+            mainViewFragment.showSnackBar()
+
+        }
+
+
+    }
+
+    fun View.showSnackBar() {
+        Snackbar.make(this, "Получилось", Snackbar.LENGTH_SHORT).show()
 
     }
 

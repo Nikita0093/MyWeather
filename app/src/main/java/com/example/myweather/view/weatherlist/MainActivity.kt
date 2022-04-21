@@ -1,7 +1,7 @@
 package com.example.myweather.view.weatherlist
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.example.myweather.R
 
 class MainActivity : AppCompatActivity() {
