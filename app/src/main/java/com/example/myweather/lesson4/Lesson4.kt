@@ -6,7 +6,6 @@ data class Lesson4(var name: String = "Никита", var age: Int = 28)
 
 var lesson4 = Lesson4()
 
-
 fun test1() {
     Log.d("@@@", "До применения test1 : $lesson4")
     with(lesson4) {

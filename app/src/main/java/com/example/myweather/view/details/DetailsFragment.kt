@@ -21,7 +21,6 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        // return inflater.inflate(R.layout.fragment_main, container, false)
         return binding.root
 
 
@@ -44,18 +43,15 @@ class DetailsFragment : Fragment() {
                 "Ощущается как:" + weather.temperatureFeelLike.toString() + "º"
             cityImage.setImageDrawable(resources.getDrawable(weather.imageId))
 
-            mainViewFragment.showSnackBar()
+            mainViewFragment.showSnackBar("Выполнено")
 
         }
 
-
     }
 
-    fun View.showSnackBar() {
-        Snackbar.make(this, "Получилось", Snackbar.LENGTH_SHORT).show()
-
+    private fun View.showSnackBar(text: String, duration: Int = Snackbar.LENGTH_SHORT) {
+        Snackbar.make(this, text, duration).show()
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

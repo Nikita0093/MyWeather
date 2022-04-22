@@ -38,22 +38,19 @@ class WeatherListAdapter(private var data: List<Weather> = listOf()) :
 
     class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(weather: Weather) {
-            val binding = FragmentWeatherListRecycleBinding.bind(itemView)
-            binding.cityName.text = weather.city.name
-            val bundle = Bundle()
-            bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
+            FragmentWeatherListRecycleBinding.bind(itemView).apply {
+                cityName.text = weather.city.name
+                val bundle = Bundle()
+                bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
 
-
-
-            binding.root.setOnClickListener(View.OnClickListener {
-                (itemView.context as MainActivity).supportFragmentManager.beginTransaction()
-                    .addToBackStack(" ").add(
-                    R.id.mainContainer,
-                    DetailsFragment.newInstance(bundle)
-                ).commit()
-            })
-
-
+                root.setOnClickListener(View.OnClickListener {
+                    (itemView.context as MainActivity).supportFragmentManager.beginTransaction()
+                        .addToBackStack(" ").add(
+                            R.id.mainContainer,
+                            DetailsFragment.newInstance(bundle)
+                        ).commit()
+                })
+            }
         }
     }
 }
