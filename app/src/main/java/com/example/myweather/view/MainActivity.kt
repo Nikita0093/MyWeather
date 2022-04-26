@@ -1,11 +1,10 @@
-package com.example.myweather.view.weatherlist
+package com.example.myweather.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myweather.R
 import com.example.myweather.lesson4.*
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.myweather.view.weatherlist.WeatherListFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

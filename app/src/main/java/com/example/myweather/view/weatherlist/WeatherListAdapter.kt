@@ -9,6 +9,7 @@ import com.example.myweather.R
 import com.example.myweather.databinding.FragmentWeatherListRecycleBinding
 import com.example.myweather.repository.Weather
 import com.example.myweather.utils.KEY_BUNDLE_WEATHER
+import com.example.myweather.view.MainActivity
 import com.example.myweather.view.details.DetailsFragment
 
 class WeatherListAdapter(private var data: List<Weather> = listOf()) :
