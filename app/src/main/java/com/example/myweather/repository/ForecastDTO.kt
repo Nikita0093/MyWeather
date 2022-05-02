@@ -3,21 +3,21 @@ package com.example.myweather.repository
 
 import com.google.gson.annotations.SerializedName
 
-data class Forecast(
+data class ForecastDTO(
     @SerializedName("date")
     val date: String,
     @SerializedName("date_ts")
-    val dateTs: Int,
+    val dateTs: Double,
     @SerializedName("moon_code")
-    val moonCode: Int,
+    val moonCode: Double,
     @SerializedName("moon_text")
     val moonText: String,
     @SerializedName("parts")
-    val parts: List<Part>,
+    val partDTOS: List<PartDTO>,
     @SerializedName("sunrise")
     val sunrise: String,
     @SerializedName("sunset")
     val sunset: String,
     @SerializedName("week")
-    val week: Int
+    val week: Double
 )

@@ -3,7 +3,7 @@ package com.example.myweather.repository
 
 import com.google.gson.annotations.SerializedName
 
-data class Info(
+data class InfoDTO(
     @SerializedName("lat")
     val lat: Double,
     @SerializedName("lon")
