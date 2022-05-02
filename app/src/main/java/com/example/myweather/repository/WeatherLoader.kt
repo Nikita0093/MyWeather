@@ -4,6 +4,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import com.example.myweather.view.details.DetailsFragment
+import com.example.myweather.view.weatherlist.WeatherListFragment
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -39,10 +40,10 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponse) {
 
 
             if (responseCode in serverSide){
-                Toast.makeText(detailsFragment.requireContext(),"Что-то не так c сервером",Toast.LENGTH_SHORT).show()
+               // Toast.makeText(detailsFragment.requireContext(),"Что-то не так c сервером",Toast.LENGTH_SHORT).show()
 
             }else if (responseCode in clientSide){
-                Toast.makeText(detailsFragment.requireContext(),"Что-то не так",Toast.LENGTH_SHORT).show()
+                //Toast.makeText(detailsFragment.requireContext(),"Что-то не так со стороны клиента",Toast.LENGTH_SHORT).show()
 
 
             }else if (responseCode in responseOk) {
@@ -50,6 +51,7 @@ class WeatherLoader(private val onServerResponseListener: OnServerResponse) {
                 val weatherDTO: WeatherDTO = Gson().fromJson(buffer, WeatherDTO::class.java)
                 Handler(Looper.getMainLooper()).post {
                     onServerResponseListener.onResponse(weatherDTO)
+                    //Toast.makeText(detailsFragment.requireContext(),"Что-то не так c сервером",Toast.LENGTH_SHORT).show()  НЕ ПОНИМАЮ ОТКУДА ДОБЫВАТЬ КОНТЕКСТ...
                 }
             }
         }.start()

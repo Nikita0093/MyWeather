@@ -56,7 +56,7 @@ class DetailsFragment : Fragment(), OnServerResponse {
             cityCoordinates.text = "${weather.infoDTO.lat} ${weather.infoDTO.lon}"
             cityImage.setImageDrawable(resources.getDrawable(currentCityImage))
             weatherCondition.text = weather.factDTO.condition
-            mainView.showSnackBar("Получилось")
+                //mainView.showSnackBar("Получилось")
 
 
         }
