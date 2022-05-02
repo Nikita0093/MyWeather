@@ -58,6 +58,7 @@ class DetailsFragment : Fragment(), OnServerResponse {
             weatherCondition.text = weather.factDTO.condition
             mainView.showSnackBar("Получилось")
 
+
         }
 
     }
