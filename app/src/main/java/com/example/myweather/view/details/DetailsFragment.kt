@@ -1,5 +1,9 @@
 package com.example.myweather.view.details
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +12,8 @@ import androidx.fragment.app.Fragment
 import com.example.myweather.databinding.FragmentDetailsBinding
 import com.example.myweather.repository.OnServerResponse
 import com.example.myweather.repository.Weather
-import com.example.myweather.repository.WeatherDTO
-import com.example.myweather.repository.WeatherLoader
-import com.example.myweather.utils.KEY_BUNDLE_WEATHER
+import com.example.myweather.repository.dto.WeatherDTO
+import com.example.myweather.utils.*
 import com.google.android.material.snackbar.Snackbar
 import kotlin.properties.Delegates
 
@@ -39,10 +42,16 @@ class DetailsFragment : Fragment(), OnServerResponse {
 
         currentCityName = weather.city.name
         currentCityImage = weather.city.imageId
-        Thread {
-            WeatherLoader(this@DetailsFragment).loadWeather(weather.city.lat, weather.city.lon)
 
-        }.start()
+        requireActivity().startService(
+            Intent(
+                requireContext(),
+                DetailsFragmentService::class.java
+            ).apply {
+                putExtra(KEY_BUNDLE_LAT, weather.city.lat)
+                putExtra(KEY_BUNDLE_LON, weather.city.lon)
+            })
+        requireActivity().registerReceiver(weatherReceiver, IntentFilter(BroadcastReceiver_WAVE))
 
 
     }
@@ -56,7 +65,7 @@ class DetailsFragment : Fragment(), OnServerResponse {
             cityCoordinates.text = "${weather.infoDTO.lat} ${weather.infoDTO.lon}"
             cityImage.setImageDrawable(resources.getDrawable(currentCityImage))
             weatherCondition.text = weather.factDTO.condition
-                //mainView.showSnackBar("Получилось")
+            //mainView.showSnackBar("Получилось")
 
 
         }
@@ -70,7 +79,23 @@ class DetailsFragment : Fragment(), OnServerResponse {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        requireActivity().unregisterReceiver(weatherReceiver)
     }
+
+    private val weatherReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let { intent ->
+                intent.getParcelableExtra<WeatherDTO>(KEY_BUNDLE_SERVICE_BROADCAST_WEATHER)?.let {
+                    onResponse(it)
+
+                }
+
+            }
+
+
+        }
+    }
+
 
     companion object {
 
@@ -86,4 +111,6 @@ class DetailsFragment : Fragment(), OnServerResponse {
     override fun onResponse(weatherDTO: WeatherDTO) {
         renderData(weatherDTO)
     }
+
+
 }
