@@ -3,7 +3,6 @@ package com.example.myweather.view.details
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +14,9 @@ import com.example.myweather.repository.Weather
 import com.example.myweather.repository.dto.WeatherDTO
 import com.example.myweather.utils.*
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import okhttp3.*
+import java.io.IOException
 import kotlin.properties.Delegates
 
 class DetailsFragment : Fragment(), OnServerResponse {
@@ -43,21 +45,61 @@ class DetailsFragment : Fragment(), OnServerResponse {
         currentCityName = weather.city.name
         currentCityImage = weather.city.imageId
 
-        requireActivity().startService(
-            Intent(
-                requireContext(),
-                DetailsFragmentService::class.java
-            ).apply {
-                putExtra(KEY_BUNDLE_LAT, weather.city.lat)
-                putExtra(KEY_BUNDLE_LON, weather.city.lon)
-            })
-        requireActivity().registerReceiver(weatherReceiver, IntentFilter(BroadcastReceiver_WAVE))
+        /*requireActivity().startService(
+        Intent(
+            requireContext(),
+            DetailsFragmentService::class.java
+        ).apply {
+            putExtra(KEY_BUNDLE_LAT, weather.city.lat)
+            putExtra(KEY_BUNDLE_LON, weather.city.lon)
+        })
+    requireActivity().registerReceiver(weatherReceiver, IntentFilter(BroadcastReceiver_WAVE))
+
+         */
+        getWeather(weather.city.lat, weather.city.lon)
 
 
     }
 
+    private fun getWeather(coordinatesLat: Double, coordinatesLon: Double) {
+        binding.loadingLayout.visibility = View.VISIBLE
+
+        val client = OkHttpClient()
+        val builder = Request.Builder()
+        builder.addHeader(KEY_YANDEX_KEY, KEY_YANDEX_KEY_VALUE)
+        builder.url("${KEY_YANDEX_DOMAIN_HARD}lat=$coordinatesLat&lon=$coordinatesLon")
+        val request = builder.build()
+        val answer: Callback = object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                binding.loadingLayout.visibility = View.GONE
+                //TODO ERROR
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    val serverResponse = response.body()!!.string()
+                    val weatherDTO: WeatherDTO =
+                        Gson().fromJson(serverResponse, WeatherDTO::class.java)
+                    requireActivity().runOnUiThread {
+                        renderData(weatherDTO)
+                    }
+                    //val message = Intent(BroadcastReceiver_WAVE)
+                } else {
+                    //TODO ERROR
+                }
+            }
+
+        }
+
+        val call = client.newCall(request)
+        call.enqueue(answer)
+
+    }
+
     private fun renderData(weather: WeatherDTO) {
+
         with(binding) {
+            loadingLayout.visibility = View.GONE
             mainView.visibility = View.VISIBLE
             cityName.text = currentCityName
             temperatureValue.text = "${weather.factDTO.temperature}"
@@ -65,7 +107,7 @@ class DetailsFragment : Fragment(), OnServerResponse {
             cityCoordinates.text = "${weather.infoDTO.lat} ${weather.infoDTO.lon}"
             cityImage.setImageDrawable(resources.getDrawable(currentCityImage))
             weatherCondition.text = weather.factDTO.condition
-            //mainView.showSnackBar("Получилось")
+            mainView.showSnackBar("Получилось")
 
 
         }

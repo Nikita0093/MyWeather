@@ -109,4 +109,18 @@
         </ImageView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <FrameLayout
+        android:id="@+id/loadingLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/weatherbackground"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
 </FrameLayout>
+
