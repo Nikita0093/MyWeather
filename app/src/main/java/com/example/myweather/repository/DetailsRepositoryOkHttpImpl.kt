@@ -4,8 +4,8 @@ import com.example.myweather.repository.dto.WeatherDTO
 import com.example.myweather.utils.*
 import com.example.myweather.viewmodel.DetailsViewModel
 import com.google.gson.Gson
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import java.io.IOException
 
 class DetailsRepositoryOkHttpImpl : DetailsRepository {
     override fun getWeatherDetails(city: City, callback: DetailsViewModel.Callback) {
@@ -18,20 +18,20 @@ class DetailsRepositoryOkHttpImpl : DetailsRepository {
         val call = client.newCall(request)
 
         Thread {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                val serverResponse = response.body()!!.string()
-                val weatherDTO: WeatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
-                val weather = convertDtoToModel(weatherDTO)
-                weather.city = city
-                callback.onResponse(weather)
+            call.enqueue(object : Callback{
+                override fun onFailure(call: Call, e: IOException) {
+                    callback.onFailure(e)
+                }
 
-            } else {
-                val serverError = response.body()!!.string()
-                callback.onFailure(serverError)
+                override fun onResponse(call: Call, response: Response) {
+                    val serverResponse = response.body()!!.string()
+                    val weatherDTO: WeatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
+                    val weather = convertDtoToModel(weatherDTO)
+                    weather.city = city
+                    callback.onResponse(weather)
+                }
 
-            }
-
+            })
         }.start()
 
 
