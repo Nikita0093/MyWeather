@@ -10,6 +10,7 @@ data class Weather(
     var city: City = getDefaultCity(),
     val temperature: Int = 10,
     val temperatureFeelLike: Int = 5,
+    val icon: String = "ovc_ra"
 ) : Parcelable
 
 fun getDefaultCity() = City("Москва", 55.755826, 37.617299900000035, R.drawable.moscow)

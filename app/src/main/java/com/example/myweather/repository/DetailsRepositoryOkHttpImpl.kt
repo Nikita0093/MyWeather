@@ -24,16 +24,17 @@ class DetailsRepositoryOkHttpImpl : DetailsRepository {
                 }
 
                 override fun onResponse(call: Call, response: Response) {
-                    val serverResponse = response.body()!!.string()
-                    val weatherDTO: WeatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
-                    val weather = convertDtoToModel(weatherDTO)
-                    weather.city = city
-                    callback.onResponse(weather)
+                    if (response.isSuccessful){
+                        val serverResponse = response.body()!!.string()
+                        val weatherDTO: WeatherDTO = Gson().fromJson(serverResponse, WeatherDTO::class.java)
+                        val weather = convertDtoToModel(weatherDTO)
+                        weather.city = city
+                        callback.onResponse(weather)
+                    }
                 }
 
             })
         }.start()
-
 
     }
 }

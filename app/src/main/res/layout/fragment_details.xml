@@ -11,102 +11,157 @@
         android:layout_height="match_parent"
         android:background="@drawable/weatherbackground">
 
+        <ImageView
+            android:id="@+id/weatherIcon"
+            android:layout_width="150dp"
+            android:layout_height="90dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline5">
+
+        </ImageView>
+
         <TextView
             android:id="@+id/cityName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:gravity="center"
             android:textColor="@color/black"
-            android:textSize="30dp"
+            android:textSize="40dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline2"
             tools:text="Москва" />
 
         <TextView
             android:id="@+id/cityCoordinates"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_5_dp"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityName"
+            app:layout_constraintTop_toTopOf="@+id/guideline8"
             tools:text="lt/ln: 55.755826, 37.617299900000035" />
 
         <TextView
             android:id="@+id/weatherCondition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15_dp"
             android:textColor="@color/black"
             android:textSize="30dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityCoordinates"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
             tools:text="Облачно" />
 
         <TextView
             android:id="@+id/temperatureLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15_dp"
             android:text="Температура"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
+            app:layout_constraintHorizontal_bias="0.508"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/weatherCondition" />
+            app:layout_constraintTop_toBottomOf="@+id/temperatureValue" />
 
         <TextView
             android:id="@+id/temperatureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15_dp"
             android:textColor="@color/black"
-            android:textSize="30dp"
+            android:textSize="45dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/guideline5"
+            app:layout_constraintEnd_toStartOf="@+id/guideline7"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/temperatureLabel"
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
             tools:text="+15" />
 
         <TextView
             android:id="@+id/feelsLikeLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15_dp"
             android:text="Ощущается как:"
             android:textColor="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/temperatureValue" />
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/feelsLikeValue" />
 
         <TextView
             android:id="@+id/feelsLikeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_15_dp"
             android:textColor="@color/black"
             android:textSize="30dp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/guideline6"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/feelsLikeLabel"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/guideline5"
             tools:text="+15" />
 
         <ImageView
             android:id="@+id/cityImage"
-            android:layout_width="350dp"
-            android:layout_height="250dp"
-            android:layout_marginTop="@dimen/margin_15_dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="300dp"
+            android:layout_height="180dp"
+            app:layout_constraintBottom_toTopOf="@+id/guideline2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/feelsLikeValue">
+            app:layout_constraintTop_toTopOf="parent">
 
         </ImageView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="200dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="309dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="459dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="555dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="206dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="669dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
@@ -114,8 +169,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/weatherbackground"
-        android:visibility="gone"
-        tools:visibility="visible">
+        android:visibility="gone">
+
         <ProgressBar
             style="?android:attr/progressBarStyleLarge"
             android:layout_width="wrap_content"
