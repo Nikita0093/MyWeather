@@ -12,7 +12,7 @@ data class Weather(
     val temperatureFeelLike: Int = 5,
 ) : Parcelable
 
-fun getDefaultCity() = City("Moscow", 55.755826, 37.617299900000035, R.drawable.moscow)
+fun getDefaultCity() = City("Москва", 55.755826, 37.617299900000035, R.drawable.moscow)
 
 
 @Parcelize

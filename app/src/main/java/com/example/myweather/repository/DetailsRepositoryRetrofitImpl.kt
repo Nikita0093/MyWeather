@@ -28,8 +28,8 @@ class DetailsRepositoryRetrofitImpl : DetailsRepository {
                     }
                 }
 
-                override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
-                    TODO("Not yet implemented")
+                override fun onFailure(call: Call<WeatherDTO>, error: Throwable) {
+                    callback.onFailure(error)
                 }
 
             })

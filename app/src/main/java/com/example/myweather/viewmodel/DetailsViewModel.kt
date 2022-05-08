@@ -17,6 +17,10 @@ class DetailsViewModel(
             override fun onResponse(weather: Weather) {
                 liveData.postValue(DetailsState.Success(weather))
             }
+
+            override fun onFailure(e: Throwable) {
+                liveData.postValue(DetailsState.Error(e))
+            }
         })
     }
 
@@ -25,5 +29,8 @@ class DetailsViewModel(
         fun onResponse(weather: Weather) {
 
         }
+
+        fun onFailure(e: Throwable)
+
     }
 }
