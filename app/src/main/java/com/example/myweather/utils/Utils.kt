@@ -1,6 +1,10 @@
 package com.example.myweather.utils
 
 import android.content.BroadcastReceiver
+import com.example.myweather.repository.Weather
+import com.example.myweather.repository.dto.FactDTO
+import com.example.myweather.repository.dto.WeatherDTO
+import com.example.myweather.repository.getDefaultCity
 
 const val KEY_BUNDLE_WEATHER = "key"
 const val KEY_BUNDLE_LAT = "lat1"
@@ -17,4 +21,11 @@ const val BroadcastReceiver_ERROR_CLIENT_BUNDLE = "myErrorClientBundle"
 
 
 class Utils {
+}
+
+
+fun convertDtoToModel (weatherDTO: WeatherDTO):Weather {
+    val fact: FactDTO = weatherDTO.factDTO
+    return (Weather(getDefaultCity(),fact.temperature,fact.feelsLike))
+
 }
