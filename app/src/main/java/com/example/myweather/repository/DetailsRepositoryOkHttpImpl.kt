@@ -27,6 +27,8 @@ class DetailsRepositoryOkHttpImpl : DetailsRepository {
                 callback.onResponse(weather)
 
             } else {
+                val serverError = response.body()!!.string()
+                callback.onFailure(serverError)
 
             }
 
