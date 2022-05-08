@@ -4,15 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import coil.ComponentRegistry
-import coil.ImageLoader
-import coil.api.load
-import coil.decode.SvgDecoder
 import com.example.myweather.databinding.FragmentDetailsBinding
 import com.example.myweather.repository.Weather
 import com.example.myweather.utils.KEY_BUNDLE_WEATHER
@@ -20,7 +14,6 @@ import com.example.myweather.viewmodel.DetailsState
 import com.example.myweather.viewmodel.DetailsViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_details.*
-import java.net.URL
 import kotlin.properties.Delegates
 
 class DetailsFragment : Fragment() {
@@ -96,16 +89,6 @@ class DetailsFragment : Fragment() {
 
 
     }
-
-    /*fun ImageView.loadSvg(url:String){
-        val imageLoader = ImageLoader.Builder(this.context)
-            .components(fun ComponentRegistry.Builder.() {
-                add(SvgDecoder(context))
-            }).build()
-
-    }
-
-     */
 
     private fun View.showSnackBar(text: String, duration: Int = Snackbar.LENGTH_SHORT) {
         Snackbar.make(this, text, duration).show()
