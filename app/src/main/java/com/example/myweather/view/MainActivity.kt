@@ -3,6 +3,7 @@ package com.example.myweather.view
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myweather.MyApp
 import com.example.myweather.R
 import com.example.myweather.lesson4.*
 import com.example.myweather.repository.MyBroadcastReceiver
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.mainContainer, WeatherListFragment.newInstance()).commit();
         }
         scopingFunctionsTest()
+        MyApp.getHistoryDao().getAll()
 
         val receive = MyBroadcastReceiver()
         registerReceiver(receive, IntentFilter(BroadcastReceiver_ERROR_WAVE))

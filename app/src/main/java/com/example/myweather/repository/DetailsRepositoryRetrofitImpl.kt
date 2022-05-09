@@ -3,6 +3,7 @@ package com.example.myweather.repository
 import com.example.myweather.repository.dto.WeatherDTO
 import com.example.myweather.utils.KEY_YANDEX_DOMAIN_HARD
 import com.example.myweather.utils.KEY_YANDEX_KEY_VALUE
+import com.example.myweather.utils.YANDEX_LANG
 import com.example.myweather.utils.convertDtoToModel
 import com.example.myweather.viewmodel.DetailsViewModel
 import com.google.gson.GsonBuilder
@@ -18,7 +19,7 @@ class DetailsRepositoryRetrofitImpl : DetailsRepository {
             baseUrl(KEY_YANDEX_DOMAIN_HARD)
             addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
         }.build().create(WeatherApi::class.java)
-        weatherApi.getWeather(KEY_YANDEX_KEY_VALUE, city.lat, city.lon)
+        weatherApi.getWeather(KEY_YANDEX_KEY_VALUE, city.lat, city.lon, YANDEX_LANG)
             .enqueue(object : Callback<WeatherDTO> {
                 override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
                     if (response.isSuccessful) {

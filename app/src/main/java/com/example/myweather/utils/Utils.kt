@@ -20,6 +20,7 @@ const val BroadcastReceiver_ERROR_SERVER_BUNDLE = "myErrorServerBundle"
 const val BroadcastReceiver_ERROR_CLIENT_BUNDLE = "myErrorClientBundle"
 const val YANDEX_LAT = "lat"
 const val YANDEX_LON = "lon"
+const val YANDEX_LANG ="ru_RU"
 
 
 class Utils {
