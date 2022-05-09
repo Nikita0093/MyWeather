@@ -1,5 +1,8 @@
 package com.example.myweather.utils
 
+import com.example.myweather.R
+import com.example.myweather.domain.room.HistoryEntity
+import com.example.myweather.repository.City
 import com.example.myweather.repository.Weather
 import com.example.myweather.repository.dto.FactDTO
 import com.example.myweather.repository.dto.WeatherDTO
@@ -20,15 +23,36 @@ const val BroadcastReceiver_ERROR_SERVER_BUNDLE = "myErrorServerBundle"
 const val BroadcastReceiver_ERROR_CLIENT_BUNDLE = "myErrorClientBundle"
 const val YANDEX_LAT = "lat"
 const val YANDEX_LON = "lon"
-const val YANDEX_LANG ="ru_RU"
+const val YANDEX_LANG = "ru_RU"
 
 
 class Utils {
 }
 
 
-fun convertDtoToModel (weatherDTO: WeatherDTO):Weather {
+fun convertDtoToModel(weatherDTO: WeatherDTO): Weather {
     val fact: FactDTO = weatherDTO.factDTO
-    return (Weather(getDefaultCity(),fact.temperature,fact.feelsLike,fact.condition,fact.icon))
+    return (Weather(getDefaultCity(), fact.temperature, fact.feelsLike, fact.condition, fact.icon))
 
+}
+
+fun convertHistoryEntityToWeather(entityList: List<HistoryEntity>): List<Weather> {
+    return entityList.map {
+        Weather(
+            City(it.city, 0.0, 0.0, R.drawable.moscow),
+            it.temperature,
+            it.temperatureFeelLike,
+            it.icon
+        )
+    }
+}
+
+fun convertWeatherToEntity(weather: Weather): HistoryEntity {
+    return HistoryEntity(
+        0,
+        weather.city.name,
+        weather.temperature,
+        weather.temperatureFeelLike,
+        weather.icon
+    )
 }

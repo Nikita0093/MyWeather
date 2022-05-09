@@ -20,19 +20,11 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.mainContainer, WeatherListFragment.newInstance()).commit();
         }
-        scopingFunctionsTest()
-        MyApp.getHistoryDao().getAll()
 
         val receive = MyBroadcastReceiver()
         registerReceiver(receive, IntentFilter(BroadcastReceiver_ERROR_WAVE))
+        MyApp.getHistoryDao().getAll()
 
     }
 
-    private fun scopingFunctionsTest() {
-        test1()
-        test2()
-        test3()
-        test4()
-        test5()
-    }
 }
