@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import coil.ImageLoader
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.example.myweather.databinding.FragmentDetailsBinding
 import com.example.myweather.repository.Weather
 import com.example.myweather.utils.KEY_BUNDLE_WEATHER
@@ -78,16 +82,29 @@ class DetailsFragment : Fragment() {
                     feelsLikeValue.text = "${weather.temperatureFeelLike}"
                     cityCoordinates.text = "${weather.city.lat} ${weather.city.lon}"
                     cityImage.setImageDrawable(resources.getDrawable(currentCityImage))
-
-                   //weatherIcon.load("https://yastatic.net/weather/i/icons/blueye/color/svg/${weather.icon}.svg")
+                    weatherCondition.text = weather.condition
 
                     mainView.showSnackBar("Получилось")
                 }
+                binding.weatherIcon.loadSvg("https://yastatic.net/weather/i/icons/blueye/color/svg/${weather.icon}.svg")
 
             }
         }
 
 
+    }
+
+    fun ImageView.loadSvg(url: String) {
+        val imageLoader = ImageLoader.Builder(this.context)
+            .componentRegistry { add(SvgDecoder(this@loadSvg.context)) }.build()
+
+        val request = ImageRequest.Builder(requireContext())
+            .crossfade(true)
+            .crossfade(500)
+            .data(url)
+            .target(this)
+            .build()
+        imageLoader.enqueue(request)
     }
 
     private fun View.showSnackBar(text: String, duration: Int = Snackbar.LENGTH_SHORT) {

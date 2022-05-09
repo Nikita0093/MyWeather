@@ -10,6 +10,7 @@ data class Weather(
     var city: City = getDefaultCity(),
     val temperature: Int = 10,
     val temperatureFeelLike: Int = 5,
+    val condition: String = "cloudy",
     val icon: String = "ovc_ra"
 ) : Parcelable
 
