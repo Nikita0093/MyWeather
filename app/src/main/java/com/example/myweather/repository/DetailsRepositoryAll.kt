@@ -1,7 +1,7 @@
 package com.example.myweather.repository
 
-import com.example.myweather.viewmodel.DetailsViewModel
+import com.example.myweather.viewmodel.HistoryViewModel
 
 interface DetailsRepositoryAll {
-    fun getAllWeatherDetails(callback: DetailsViewModel.CallbackForAll)
+    fun getAllWeatherDetails(callback: HistoryViewModel.CallbackForAll)
 }

@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myweather.R
 import com.example.myweather.databinding.FragmentWeatherListBinding
 import com.example.myweather.repository.Weather
+import com.example.myweather.view.historylist.HistoryWeatherListAdapter
+import com.example.myweather.view.historylist.HistoryWeatherListFragment
 import com.example.myweather.viewmodel.AppState
-import com.example.myweather.viewmodel.MainViewModel
+import com.example.myweather.viewmodel.ListViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment(), OnItemListClickListener {
@@ -37,7 +39,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindingListFragment.recyclerView.adapter = adapter
-        val viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        val viewModel = ViewModelProvider(this).get(ListViewModel::class.java)
         val observer = Observer<AppState> { data -> renderData(data) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
         viewModel.getRussianWeather()

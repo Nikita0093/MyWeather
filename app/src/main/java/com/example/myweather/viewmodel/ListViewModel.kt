@@ -7,7 +7,7 @@ import com.example.myweather.repository.Repository
 import com.example.myweather.repository.RepositoryImpl
 import java.lang.Thread.sleep
 
-class MainViewModel(
+class ListViewModel(
     private val liveData: MutableLiveData<AppState> = MutableLiveData(),
     private val repository: Repository = RepositoryImpl()
 ) :

@@ -6,7 +6,8 @@ import com.example.myweather.repository.*
 
 class DetailsViewModel(
     private val liveData: MutableLiveData<DetailsState> = MutableLiveData(),
-    private var repositoryOne: DetailsRepositoryOne = DetailsRepositoryOneOkHttpImpl()
+    private var repositoryOne: DetailsRepositoryOne = DetailsRepositoryOneRetrofitImpl(),
+    private var repositoryAdd: DetailsRepositoryAdd = DetailsRepositoryRoomImpl()
 ) :
     ViewModel() {
     fun getLiveData() = liveData
@@ -16,6 +17,7 @@ class DetailsViewModel(
         repositoryOne.getWeatherDetails(city, object : Callback {
             override fun onResponse(weather: Weather) {
                 liveData.postValue(DetailsState.Success(weather))
+                repositoryAdd.addWeather(weather)
             }
 
             override fun onFailure(e: Throwable) {
@@ -33,16 +35,5 @@ class DetailsViewModel(
         fun onFailure(e: Throwable)
 
     }
-
-    interface CallbackForAll {
-
-        fun onResponse(listWeather: List <Weather>) {
-
-        }
-
-        fun onFailure(e: Throwable)
-
-    }
-
 
 }

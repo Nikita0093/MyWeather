@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.decode.SvgDecoder
@@ -46,11 +45,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<DetailsState> {
-            override fun onChanged(t: DetailsState) {
-                renderData(t)
-            }
-        })
+        viewModel.getLiveData().observe(viewLifecycleOwner
+        ) { t -> renderData(t) }
         val weather: Weather = requireArguments().getParcelable<Weather>(KEY_BUNDLE_WEATHER)!!
         currentCityImage = weather.city.imageId
 
