@@ -9,7 +9,12 @@ import com.example.myweather.viewmodel.HistoryViewModel
 class DetailsRepositoryRoomImpl : DetailsRepositoryOne, DetailsRepositoryAll, DetailsRepositoryAdd {
     override fun getWeatherDetails(city: City, callback: DetailsViewModel.Callback) {
         val list = convertHistoryEntityToWeather(MyApp.getHistoryDao().getHistoryForCity(city.name))
-        callback.onResponse(list.last())
+        if (list.isEmpty()) {
+            callback.onDisconnect("Ошибка: Данный город отсутствует в списке базы данных.\n Повторите запрос")
+        } else {
+            callback.onResponse(list.last())
+        }
+
     }
 
     override fun getAllWeatherDetails(callback: HistoryViewModel.CallbackForAll) {

@@ -7,7 +7,9 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myweather.MyApp
 import com.example.myweather.R
+import com.example.myweather.repository.ConnectionBroadcastReceiver
 import com.example.myweather.repository.MyBroadcastReceiver
+import com.example.myweather.utils.BroadcastReceiver_CONNECTION_WAVE
 import com.example.myweather.utils.BroadcastReceiver_ERROR_WAVE
 import com.example.myweather.view.historylist.HistoryWeatherListFragment
 import com.example.myweather.view.weatherlist.WeatherListFragment
@@ -22,10 +24,17 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.mainContainer, WeatherListFragment.newInstance()).commit();
         }
 
-        val receive = MyBroadcastReceiver()
-        registerReceiver(receive, IntentFilter(BroadcastReceiver_ERROR_WAVE))
+        registerBroadcasting()
         MyApp.getHistoryDao().getAll()
 
+    }
+
+    private fun registerBroadcasting() {
+        val receive = MyBroadcastReceiver()
+        registerReceiver(receive, IntentFilter(BroadcastReceiver_ERROR_WAVE))
+
+        val connectionReceiver = ConnectionBroadcastReceiver()
+        registerReceiver(connectionReceiver, IntentFilter(BroadcastReceiver_CONNECTION_WAVE))
     }
 
 
@@ -39,10 +48,11 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.historyBtn -> {
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.mainContainer, HistoryWeatherListFragment.newInstance()).addToBackStack("").commit()
+                    .replace(R.id.mainContainer, HistoryWeatherListFragment.newInstance())
+                    .addToBackStack("").commit()
             }
 
-            R.id.back ->{
+            R.id.back -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.mainContainer, WeatherListFragment.newInstance()).commit()
 

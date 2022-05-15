@@ -1,5 +1,7 @@
 package com.example.myweather.view.weatherlist
 
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,13 +13,13 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myweather.R
 import com.example.myweather.databinding.FragmentWeatherListBinding
 import com.example.myweather.repository.Weather
-import com.example.myweather.view.historylist.HistoryWeatherListAdapter
-import com.example.myweather.view.historylist.HistoryWeatherListFragment
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.ListViewModel
 import com.google.android.material.snackbar.Snackbar
 
+
 class WeatherListFragment : Fragment(), OnItemListClickListener {
+    private var isRussian: Boolean = true
 
     private var _binding: FragmentWeatherListBinding? = null
     private val bindingListFragment get() = _binding!!
@@ -32,9 +34,27 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         _binding = FragmentWeatherListBinding.inflate(inflater, container, false)
         return bindingListFragment.root
 
+
     }
 
-    var isRussian: Boolean = false
+    private fun saveData() {
+        val sharedPreferences: SharedPreferences =
+            requireActivity().getSharedPreferences("sharedPref", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.apply {
+            putBoolean("WeatherPos", isRussian)
+        }.apply()
+
+    }
+
+    private fun loadData() {
+        val sharedPreferences: SharedPreferences =
+            requireActivity().getSharedPreferences("sharedPref",MODE_PRIVATE)
+        val savedBoolean = sharedPreferences.getBoolean("WeatherPos", isRussian)
+        isRussian = savedBoolean
+
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -44,17 +64,22 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         viewModel.getData().observe(viewLifecycleOwner, observer)
         viewModel.getRussianWeather()
         bindingListFragment.floatActonButton.setOnClickListener(View.OnClickListener {
+            loadData()
             if (isRussian) {
-                viewModel.getRussianWeather();
+                viewModel.getRussianWeather()
                 isRussian = false
+                saveData()
                 bindingListFragment.floatActonButton.setImageDrawable(
                     ContextCompat.getDrawable(
                         requireContext(),
                         R.drawable.ic_russia
                     )
+
                 )
             } else {
-                viewModel.getWorldWeather(); isRussian = true
+                viewModel.getWorldWeather()
+                isRussian = true
+                saveData()
                 bindingListFragment.floatActonButton.setImageDrawable(
                     ContextCompat.getDrawable(
                         requireContext(),

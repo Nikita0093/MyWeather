@@ -45,7 +45,8 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getLiveData().observe(viewLifecycleOwner
+        viewModel.getLiveData().observe(
+            viewLifecycleOwner
         ) { t -> renderData(t) }
         val weather: Weather = requireArguments().getParcelable<Weather>(KEY_BUNDLE_WEATHER)!!
         currentCityImage = weather.city.imageId
@@ -85,9 +86,11 @@ class DetailsFragment : Fragment() {
                 binding.weatherIcon.loadSvg("https://yastatic.net/weather/i/icons/blueye/color/svg/${weather.icon}.svg")
 
             }
+            is DetailsState.Disconnect -> {
+                val x = detailsState.x
+                mainView.showSnackBar(x)
+            }
         }
-
-
     }
 
     fun ImageView.loadSvg(url: String) {
