@@ -1,8 +1,10 @@
 package com.example.myweather
+
 import android.app.Application
 import androidx.room.Room
 import com.example.myweather.domain.room.HistoryDao
 import com.example.myweather.domain.room.MyDataBase
+import kotlin.concurrent.thread
 
 class MyApp : Application() {
     override fun onCreate() {
@@ -19,8 +21,7 @@ class MyApp : Application() {
                 if (appContext != null) {
 
 
-                    database = Room.databaseBuilder(appContext!!, MyDataBase::class.java, "test")
-                        .allowMainThreadQueries().build()
+                    database = Room.databaseBuilder(appContext!!, MyDataBase::class.java, "test").allowMainThreadQueries().build()
 
 
                 } else {

@@ -13,6 +13,7 @@ import com.example.myweather.utils.BroadcastReceiver_CONNECTION_WAVE
 import com.example.myweather.utils.BroadcastReceiver_ERROR_WAVE
 import com.example.myweather.view.historylist.HistoryWeatherListFragment
 import com.example.myweather.view.weatherlist.WeatherListFragment
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         registerBroadcasting()
         MyApp.getHistoryDao().getAll()
+
 
     }
 

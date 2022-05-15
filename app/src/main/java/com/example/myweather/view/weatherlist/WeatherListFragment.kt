@@ -20,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class WeatherListFragment : Fragment(), OnItemListClickListener {
     private var isRussian: Boolean = false
-
     private var _binding: FragmentWeatherListBinding? = null
     private val bindingListFragment get() = _binding!!
 
@@ -50,7 +49,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
     private fun loadData() {
         val sharedPreferences: SharedPreferences =
             requireActivity().getSharedPreferences("sharedPref", MODE_PRIVATE)
-        val savedBoolean = sharedPreferences.getBoolean("WeatherPos", true)
+        val savedBoolean = sharedPreferences.getBoolean("WeatherPos", false)
         isRussian = savedBoolean
 
     }
@@ -63,7 +62,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         val observer = Observer<AppState> { data -> renderData(data) }
         viewModel.getData().observe(viewLifecycleOwner, observer)
         loadData()
-        if (isRussian == false) {
+        if (!isRussian) {
             viewModel.getRussianWeather()
             bindingListFragment.floatActonButton.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -83,7 +82,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         }
         bindingListFragment.floatActonButton.setOnClickListener(View.OnClickListener {
             loadData()
-            if (isRussian == true) {
+            if (isRussian) {
                 isRussian = false
                 saveData()
                 viewModel.getRussianWeather()
@@ -95,7 +94,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
                 )
 
-            } else if (isRussian == false) {
+            } else if (!isRussian) {
                 isRussian = true
                 saveData()
                 viewModel.getWorldWeather()
