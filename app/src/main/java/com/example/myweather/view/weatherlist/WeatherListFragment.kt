@@ -1,11 +1,18 @@
 package com.example.myweather.view.weatherlist
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -107,6 +114,61 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
             }
 
         })
+
+        setupFab()
+
+    }
+
+    private fun checkPermission() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+                    == PackageManager.PERMISSION_GRANTED -> {
+                Toast.makeText(requireContext(), "Работает", Toast.LENGTH_LONG).show()
+                getLocation()
+            }
+            shouldShowRequestPermissionRationale(android.Manifest.permission.READ_CONTACTS) -> {
+                Toast.makeText(requireContext(), " Наверно Работает", Toast.LENGTH_LONG).show()
+                //TODO...
+            }
+            else -> {
+                Toast.makeText(requireContext(), "Не Работает", Toast.LENGTH_LONG).show()
+                //TODO...
+            }
+        }
+    }
+
+    private fun setupFab() {
+        bindingListFragment.mainFragmentFABLocation.setOnClickListener {
+            checkPermission()
+        }
+    }
+
+    val locationListener = object : LocationListener {
+        override fun onLocationChanged(p0: Location) {
+
+        }
+
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun getLocation() {
+        context?.let {
+            val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
+                providerGPS?.let {
+                    locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        10000L,
+                        10.0f,
+                        locationListener
+                    )
+                }
+            }
+        }
 
     }
 
