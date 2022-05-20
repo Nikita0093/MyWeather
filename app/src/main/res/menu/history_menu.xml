@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/historyBtn"
+        android:id="@+id/menu_historyBtn"
         android:icon="@drawable/ic_history"
         android:title="History"
         app:showAsAction="always">
@@ -10,10 +10,16 @@
     </item>
 
     <item
-        android:id="@+id/back"
+        android:id="@+id/menu_back"
         android:icon="@drawable/ic_back"
         android:title="Back"
         app:showAsAction="always">
 
     </item>
+
+    <item
+        android:id="@+id/menu_google_maps"
+        android:icon="@android:drawable/ic_dialog_map"
+        android:title="@string/google_maps"
+        app:showAsAction="always" />
 </menu>

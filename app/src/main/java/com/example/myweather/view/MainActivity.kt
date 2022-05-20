@@ -7,13 +7,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myweather.MyApp
 import com.example.myweather.R
+import com.example.myweather.lesson10.MapsFragment
 import com.example.myweather.repository.ConnectionBroadcastReceiver
 import com.example.myweather.repository.MyBroadcastReceiver
 import com.example.myweather.utils.BroadcastReceiver_CONNECTION_WAVE
 import com.example.myweather.utils.BroadcastReceiver_ERROR_WAVE
 import com.example.myweather.view.historylist.HistoryWeatherListFragment
 import com.example.myweather.view.weatherlist.WeatherListFragment
-import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,15 +48,21 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.historyBtn -> {
+            R.id.menu_historyBtn -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.mainContainer, HistoryWeatherListFragment.newInstance())
                     .addToBackStack("").commit()
             }
 
-            R.id.back -> {
+            R.id.menu_back -> {
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.mainContainer, WeatherListFragment.newInstance()).commit()
+
+            }
+
+            R.id.menu_google_maps -> {
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.mainContainer, MapsFragment()).commit()
 
             }
         }

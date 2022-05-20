@@ -205,7 +205,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
             )[0].getAddressLine(0)
 
             requireActivity().runOnUiThread {
-                showAlertDialog(addressText, location)
+                showWeatherAlertDialog(addressText, location)
             }
 
         }.start()
@@ -262,7 +262,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
     }
 
-    private fun showAlertDialog(address: String, location: Location) {
+    private fun showWeatherAlertDialog(address: String, location: Location) {
         activity?.let {
             AlertDialog.Builder(it)
                 .setTitle(getString(R.string.dialog_address_title))
