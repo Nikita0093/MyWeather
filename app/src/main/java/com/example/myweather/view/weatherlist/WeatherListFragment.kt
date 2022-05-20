@@ -1,10 +1,13 @@
 package com.example.myweather.view.weatherlist
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -19,7 +22,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.myweather.R
 import com.example.myweather.databinding.FragmentWeatherListBinding
+import com.example.myweather.repository.City
 import com.example.myweather.repository.Weather
+import com.example.myweather.repository.getDefaultCity
+import com.example.myweather.utils.KEY_BUNDLE_WEATHER
+import com.example.myweather.view.details.DetailsFragment
 import com.example.myweather.viewmodel.AppState
 import com.example.myweather.viewmodel.ListViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -30,7 +37,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
     private var _binding: FragmentWeatherListBinding? = null
     private val bindingListFragment get() = _binding!!
 
-    private val adapter = WeatherListAdapter()
+    private val adapter = WeatherListAdapter(this)
 
 
     override fun onCreateView(
@@ -115,7 +122,7 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
 
         })
 
-        setupFab()
+        setupFabLocation()
 
     }
 
@@ -123,35 +130,105 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         when {
             ContextCompat.checkSelfPermission(
                 requireContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             )
                     == PackageManager.PERMISSION_GRANTED -> {
                 Toast.makeText(requireContext(), "Работает", Toast.LENGTH_LONG).show()
+
                 getLocation()
             }
-            shouldShowRequestPermissionRationale(android.Manifest.permission.READ_CONTACTS) -> {
+            shouldShowRequestPermissionRationale(android.Manifest.permission.ACCESS_FINE_LOCATION) -> {
                 Toast.makeText(requireContext(), " Наверно Работает", Toast.LENGTH_LONG).show()
-                //TODO...
+                explain()
             }
             else -> {
                 Toast.makeText(requireContext(), "Не Работает", Toast.LENGTH_LONG).show()
-                //TODO...
+                requestPermission()
             }
         }
     }
 
-    private fun setupFab() {
+    private val REQUEST_CODE = 999
+
+    private fun requestPermission() {
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE)
+    }
+
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE) {
+            for (i in permissions.indices) {
+                if (permissions[i] == Manifest.permission.ACCESS_FINE_LOCATION && grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    getLocation()
+                } else {
+                    explain()
+
+                }
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    private fun explain() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(resources.getString(R.string.dialog_rationale_title))
+            .setMessage(resources.getString(R.string.dialog_rationale_message))
+            .setPositiveButton(resources.getString(R.string.dialog_rationale_give_access)) { _, _ ->
+                requestPermission()
+            }
+            .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+    }
+
+
+    private fun setupFabLocation() {
         bindingListFragment.mainFragmentFABLocation.setOnClickListener {
             checkPermission()
         }
     }
 
-    val locationListener = object : LocationListener {
-        override fun onLocationChanged(p0: Location) {
+    fun getAddressByLocation(location: Location) {
+        val geocoder = Geocoder(requireContext())
+        Thread {
+
+            val addressText = geocoder.getFromLocation(
+                location.latitude,
+                location.longitude,
+                10000
+            )[0].getAddressLine(0)
+
+            requireActivity().runOnUiThread {
+                showAlertDialog(addressText, location)
+            }
+
+        }.start()
+
+
+    }
+
+    val locationListenerTime = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            getAddressByLocation(location)
 
         }
 
     }
+
+    val locationListenerDistance = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+            getAddressByLocation(location)
+
+        }
+
+    }
+
 
     @SuppressLint("MissingPermission")
     private fun getLocation() {
@@ -159,15 +236,54 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
             val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
             if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
+                /*
                 providerGPS?.let {
                     locationManager.requestLocationUpdates(
                         LocationManager.GPS_PROVIDER,
                         10000L,
-                        10.0f,
-                        locationListener
+                        0f,
+                        locationListenerTime
+                    )
+
+                }
+
+                    */
+
+                providerGPS?.let {
+                    locationManager.requestLocationUpdates(
+                        LocationManager.GPS_PROVIDER,
+                        0,
+                        100f,
+                        locationListenerDistance
                     )
                 }
             }
+        }
+
+    }
+
+    private fun showAlertDialog(address: String, location: Location) {
+        activity?.let {
+            AlertDialog.Builder(it)
+                .setTitle(getString(R.string.dialog_address_title))
+                .setMessage(address)
+                .setPositiveButton(getString(R.string.dialog_address_get_weather)) { _, _ ->
+                    onItemClick(
+                        Weather(
+                            City(
+                                address,
+                                location.latitude,
+                                location.longitude,
+                                getDefaultCity().imageId
+                            )
+                        )
+                    )
+
+                }
+                .setNegativeButton(getString(R.string.dialog_button_close)) { dialog, _ -> dialog.dismiss() }
+                .create()
+                .show()
+
         }
 
     }
@@ -207,7 +323,13 @@ class WeatherListFragment : Fragment(), OnItemListClickListener {
         fun newInstance() = WeatherListFragment()
     }
 
+
     override fun onItemClick(weather: Weather) {
-        TODO("Not yet implemented")
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(R.id.mainContainer, DetailsFragment.newInstance(Bundle().apply {
+                putParcelable(KEY_BUNDLE_WEATHER, weather)
+            })).addToBackStack(" ").commit()
+
     }
+
 }

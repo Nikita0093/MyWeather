@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myweather.R
 import com.example.myweather.databinding.FragmentWeatherListRecycleBinding
@@ -13,8 +14,11 @@ import com.example.myweather.view.MainActivity
 import com.example.myweather.view.details.DetailsFragment
 import com.example.myweather.view.historylist.HistoryWeatherListAdapter
 
-class WeatherListAdapter(private var data: List<Weather> = listOf()) :
-    RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
+class WeatherListAdapter(
+    private val onItemListClickListener: OnItemListClickListener,
+    private var data: List<Weather> = listOf()
+) : RecyclerView.Adapter<WeatherListAdapter.CityHolder>() {
+
 
     fun setData(data: List<Weather>) {
         this.data = data
@@ -38,20 +42,13 @@ class WeatherListAdapter(private var data: List<Weather> = listOf()) :
     override fun getItemCount() = data.size
 
 
-    class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(weather: Weather) {
             FragmentWeatherListRecycleBinding.bind(itemView).apply {
                 cityName.text = weather.city.name
-                val bundle = Bundle()
-                bundle.putParcelable(KEY_BUNDLE_WEATHER, weather)
-
-                root.setOnClickListener(View.OnClickListener {
-                    (itemView.context as MainActivity).supportFragmentManager.beginTransaction()
-                        .addToBackStack(" ").add(
-                            R.id.mainContainer,
-                            DetailsFragment.newInstance(bundle)
-                        ).commit()
-                })
+                root.setOnClickListener {
+                    onItemListClickListener.onItemClick(weather)
+                }
             }
         }
     }
